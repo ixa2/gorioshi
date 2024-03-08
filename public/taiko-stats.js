@@ -15,6 +15,6 @@ addEventListener("load", () => {
 
       document.getElementById("time").textContent = new Date(firstGroup["dimensions"]["datetime"]).toLocaleString();
       document.getElementById("uniq").textContent = firstGroup["uniq"]["uniques"];
-      document.getElementById("gb").textContent = parseInt(firstGroup["sum"]["bytes"], 10) / 1024 ** 3;
+      document.getElementById("gb").textContent = parseInt(firstGroup["sum"]["bytes"], 10) / 1000 ** 3;
     });
 });
