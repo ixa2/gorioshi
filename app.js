@@ -51,14 +51,20 @@ app.get("/analytics", (req, res) => {
     },
     body: JSON.stringify({ query, variables })
   })
-    .then((response) => response.json())
-    .then((json) => {
-      res.set({
-        "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "public, max-age=60, s-maxage=60",
-        "CDN-Cache-Control": "max-age=60",
-      });
-      res.json(json);
+    .then((result) => {
+      if (result.ok) {
+        (async () => {
+          const json = await result.json();
+          res.set({
+            "Access-Control-Allow-Origin": "*",
+            "Cache-Control": "public, max-age=60, s-maxage=60",
+            "CDN-Cache-Control": "max-age=60",
+          });
+          res.json(json);
+        })();
+      } else {
+        res.status(500).send("えらー");
+      }
     });
 });
 
