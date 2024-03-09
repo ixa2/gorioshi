@@ -9,16 +9,16 @@ app.get("/analytics", (req, res) => {
     zones(filter: {
       zoneTag: $zoneTag
     }) {
-      httpRequests1hGroups(
-        orderBy: [datetime_DESC],
+      httpRequests1dGroups(
+        orderBy: [date_DESC],
         limit: $limit,
         filter: {
-          datetime_gt: $from,
-          datetime_leq: $to
+          date_gt: $from,
+          date_leq: $to
         }
       ) {
         dimensions {
-          datetime
+          date
         }
         sum {
           bytes
@@ -34,14 +34,13 @@ app.get("/analytics", (req, res) => {
 `
 
   const today = new Date();
-  const yesterday = new Date();
-  yesterday.setDate(today.getDate() - 1);
+  const lastMonth = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
   const variables = {
     "zoneTag": req.query.zoneId,
-    "from": yesterday.toISOString().replace(/\.[0-9]{3}/, ""),
-    "to": today.toISOString().replace(/\.[0-9]{3}/, ""),
-    "limit": 24,
+    "from": lastMonth.toISOString().slice(0, 10),
+    "to": today.toISOString().slice(0, 10),
+    "limit": 30,
   };
 
   fetch("https://api.cloudflare.com/client/v4/graphql", {
