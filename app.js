@@ -10,7 +10,7 @@ app.get("/analytics", (req, res) => {
       zoneTag: $zoneTag
     }) {
       httpRequests1dGroups(
-        orderBy: [date_DESC],
+        orderBy: [date_ASC],
         limit: $limit,
         filter: {
           date_gt: $from,
